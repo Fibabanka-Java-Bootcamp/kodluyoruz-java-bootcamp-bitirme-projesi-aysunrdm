@@ -1,46 +1,41 @@
 package org.kodluyoruz.mybank.Account;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+
 import java.util.List;
-import java.util.logging.Logger;
+
 
 @RestController
-@RequestMapping("/account")
+@RequestMapping(value = "/account", produces = "application/json")
 public class AccountController {
 
+    @Autowired
+    private AccountService accountService;
 
-        Logger LOG = Logger.getLogger(AccountController.class.getName());
 
-        @Autowired(required=true)
-        @Qualifier("accountService")
-        private AccountService accountService;
-
-        @GetMapping("/{accountId}")
-        public AccountEntity getAccounts(@PathVariable("accountId") Long accountId){
-
-            return accountService.getAccount(accountId);
-        }
-
-        @RequestMapping(value="/all",method= RequestMethod.GET)
-        public List<AccountEntity> allAccounts(){
-            List<AccountEntity> list = accountService.getAllAccounts();
-            return list;
-        }
-        //
-        @RequestMapping(value="/update",method=RequestMethod.POST)
-        public AccountEntity editAccount(@RequestBody AccountEntity account){
-            account = accountService.updateAccount(account);
-            return account;
-
-        }
-        //
-        @RequestMapping(value="/add",method=RequestMethod.POST)
-        public AccountEntity addAccount(@RequestBody AccountEntity account){
-            account = accountService.addAccount(account);
-            return account;
-        }
-
+    @PostMapping(value = "/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public AccountEntity createAccount(@RequestBody AccountDTO request) {
+        return accountService.createAccount(request);
     }
+
+    @GetMapping(value = "/list")
+    public List<AccountEntity> listAllAccounts() {
+        return accountService.findAll();
+    }
+
+    @PutMapping(value = "/update/{accountId}")
+    public AccountEntity updateAccount(@PathVariable Long accountId, @RequestBody AccountDTO request) {
+        return accountService.updateAccount(accountId, request);
+    }
+
+
+    @DeleteMapping("/delete/{accountId}")
+    private void deleteAccount(@PathVariable("accountId") Long accountId) {
+        accountService.deleteAccount(accountId);
+    }
+
+
+}

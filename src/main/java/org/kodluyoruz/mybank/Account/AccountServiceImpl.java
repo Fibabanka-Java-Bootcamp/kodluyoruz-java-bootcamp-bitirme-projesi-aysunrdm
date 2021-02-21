@@ -1,46 +1,92 @@
 package org.kodluyoruz.mybank.Account;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 import java.util.List;
+
 
 @Service("accountService")
 @Transactional
 public class AccountServiceImpl implements AccountService {
 
+    @Autowired
+    private AccountRepository accountRepository;
 
-        @Autowired(required=true)
-        @Qualifier("accountRepository")
-        private AccountRepository accountRepository;
+    @Transactional
+    public AccountEntity createAccount(AccountDTO account) {
 
-        @Transactional
-        public AccountEntity addAccount(AccountEntity account) {
+        System.out.println("Account Service Create invoked...");
 
-            System.out.println("Account Service create invoked:" + account.getAccountNo());
-            account = accountRepository.addAccount(account);
+        AccountEntity accountEntity = new AccountEntity();
+
+        accountEntity.setAccountType(account.getAccountType());
+        accountEntity.setAccountNo(account.getAccountNo());
+        accountEntity.setCustomerId(account.getCustomerId());
+        accountEntity.setBankCode(account.getBankCode());
+        accountEntity.setCurrency(account.getCurrency());
+        accountEntity.setBalance(account.getBalance());
+
+        return accountRepository.save(accountEntity);
+    }
+
+
+    @Transactional
+    public List<AccountEntity> findAll() {
+        return accountRepository.findAll();
+    }
+
+
+    @Transactional
+    public AccountEntity updateAccount(Long accountId, AccountDTO request) {
+
+        AccountEntity updatedAccount = Optional.ofNullable(accountRepository.findOne(accountId)).map(accountEntity -> {
+
+            AccountEntity account = new AccountEntity();
+
+            account.setAccountId(request.getAccountId());
+            account.setAccountType(request.getAccountType());
+            account.setAccountNo(request.getAccountNo());
+            account.setCustomerId(request.getCustomerId());
+            account.setBankCode(request.getBankCode());
+            account.setCurrency(request.getCurrency());
+            account.setBalance(request.getBalance());
             return account;
-        }
-        @Transactional
-        public AccountEntity updateAccount(AccountEntity account) {
 
-            System.out.println("Account Service Update invoked:" + account.getAccountNo());
-            account = accountRepository.updateAccount(account);
-            return account;
-        }
+        }).get();
 
-        public AccountEntity getAccount(Long accountId) {
-            return accountRepository.getAccount(accountId);
-        }
+        return accountRepository.save(updatedAccount);
+    }
 
-        public List<AccountEntity> getAllAccounts() {
-            return (List<AccountEntity>) accountRepository.getAccounts();
-        }
+    @Transactional
+    public void deleteAccount(Long accountId) {
+        accountRepository.deleteById(accountId);
+    }
 
-        @Transactional
-        public void deleteAccount(Long accountId) {
-            accountRepository.deleteAccount(accountId);
-        }
+
+
+
+
+/*
+
+    Kullanıcılar iki farkılı türde
+    hesap açabilecek,vadesiz mevduat hesabı ve birikim hesabı.
+
+    İki hesap arası para transferi
+    yapılabilecek, vadesiz mevduat hesabı başka hesaplara para transferi için
+    kullanılabilecekken birikim hesabından doğrudan para transferi yapılamayacak.
+     Hesaplar
+    TL, Euro yada Dolar para birimlerinde açılabilecek.
+ */
+
+    @Transactional
+    public boolean savingAccount(Long accountId) {
+
+        return this.accountRepository.findById(accountId).get().getAccountType().equals(AccountType.SAVING_ACCOUNT);
 
     }
+
+
+}

@@ -1,15 +1,18 @@
 package org.kodluyoruz.mybank.Account;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import java.util.List;
+
+import java.util.Optional;
 
 @Repository
-public interface AccountRepository {
+public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
 
-        public AccountEntity addAccount(AccountEntity accountEntity);
-        public AccountEntity updateAccount(AccountEntity accountEntity);
-        public void deleteAccount(Long accountId);
-        public AccountEntity getAccount(Long accountId);
-        public List<AccountEntity> getAccounts();
-
+    default <S extends AccountEntity> Optional<S> findOne(Long example) {
+        return Optional.empty();
     }
+
+    void deleteById(Long accountId);
+
+
+}

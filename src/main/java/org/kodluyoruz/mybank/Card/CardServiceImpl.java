@@ -1,49 +1,67 @@
 package org.kodluyoruz.mybank.Card;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
+import java.util.Optional;
 
 @Service("cardService")
 @Transactional
-public class CardServiceImpl implements CardService{
+public class CardServiceImpl implements CardService {
 
-        @Autowired(required=true)
-        @Qualifier("cardRepository")
-        private CardRepository cardRepository;
 
-        @Transactional
-        public CardEntity addCard(CardEntity card) {
+    @Autowired
+    private CardRepository cardRepository;
 
-            System.out.println("Card Service Create invoked:"+ card.getCardNo());
-            card = cardRepository.addCard(card);
-            return card;
-        }
+    @Transactional
+    public CardEntity createCard(CardDTO card) {
 
-        @Transactional
-        public CardEntity updateCard(CardEntity card) {
+        System.out.println("Card Service Create invoked...");
 
-            System.out.println("Card Service Update invoked:"+card.getCardNo());
-            card = cardRepository.updateCard(card);
-            return card;
-        }
+        CardEntity cardEntity = new CardEntity();
 
-        public CardEntity getCard(Long cardId) {
-            return cardRepository.getCard(cardId);
-        }
+        cardEntity.setCardType(card.getCardType());
+        cardEntity.setCardNo(card.getCardNo());
+        cardEntity.setAccountId(card.getAccountId());
+        cardEntity.setCustomerId(card.getCustomerId());
 
-        public List<CardEntity> getAllCards() {
-            return (List<CardEntity>) cardRepository.getCards();
-        }
-
-        @Transactional
-        public void deleteCard(Long cardId) {
-            cardRepository.deleteCard(cardId);
-        }
-
+        return cardRepository.save(cardEntity);
     }
+
+
+    @Transactional
+    public List<CardEntity> findAll() {
+        return cardRepository.findAll();
+    }
+
+
+    @Transactional
+    public CardEntity updateCard(Long cardId, CardDTO request) {
+
+        CardEntity updatedCard = Optional.ofNullable(cardRepository.findOne(cardId)).map(cardEntity -> {
+
+            CardEntity card = new CardEntity();
+
+            card.setCardId(request.getCardId());
+            card.setCardType(request.getCardType());
+            card.setCardNo(request.getCardNo());
+            card.setAccountId(request.getAccountId());
+            card.setCustomerId(request.getCustomerId());
+            return card;
+
+        }).get();
+
+        return cardRepository.save(updatedCard);
+    }
+
+    @Transactional
+    public void deleteCard(Long cardId) {
+        cardRepository.deleteById(cardId);
+    }
+
+}
 
 
 

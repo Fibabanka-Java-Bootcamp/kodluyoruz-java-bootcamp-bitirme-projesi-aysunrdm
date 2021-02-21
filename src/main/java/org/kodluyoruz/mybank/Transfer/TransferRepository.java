@@ -1,14 +1,17 @@
 package org.kodluyoruz.mybank.Transfer;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import java.util.List;
+
+import java.util.Optional;
 
 @Repository
-public interface TransferRepository {
+public interface TransferRepository extends JpaRepository<TransferEntity, Long> {
 
-        public TransferEntity addTransfer(TransferEntity transferEntity);
-        public TransferEntity updateTransfer(TransferEntity transferEntity);
-        public void deleteTransfer(Long transferId);
-        public TransferEntity getTransfer(Long transferId);
-        public List<TransferEntity> getTransfers();
+    default <S extends TransferEntity> Optional<S> findOne(Long example) {
+        return Optional.empty();
+    }
+
+    void deleteById(Long transferId);
+
 }

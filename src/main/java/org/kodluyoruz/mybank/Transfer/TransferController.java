@@ -1,42 +1,41 @@
 package org.kodluyoruz.mybank.Transfer;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import java.util.logging.Logger;
+
 import java.util.List;
 
 
 @RestController
-@RequestMapping("/transfer")
+@RequestMapping(value = "/transfer", produces = "application/json")
 public class TransferController {
 
-        Logger LOG = Logger.getLogger(TransferController.class.getName());
+    @Autowired
+    private TransferService transferService;
 
-        @Autowired(required=true)
-        @Qualifier("transferService")
-        private TransferService transferService;
 
-        @GetMapping("/{transferId}")
-        public TransferEntity getTransfers(@PathVariable("transferId") Long transferId){
+    @PostMapping(value = "/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public TransferEntity createTransfer(@RequestBody TransferDTO request) {
+        return transferService.createTransfer(request);
+    }
 
-            return transferService.getTransfer(transferId);
-        }
-        @RequestMapping(value="/all",method= RequestMethod.GET)
-        public List<TransferEntity> allTransfers(){
-            List<TransferEntity> list = transferService.getAllTransfers();
-            return list;
-        }
-        @RequestMapping(value="/update",method=RequestMethod.POST)
-        public TransferEntity editTransfer(@RequestBody TransferEntity transfer){
-            transfer = transferService.updateTransfer(transfer);
-            return transfer;
+    @GetMapping(value = "/list")
+    public List<TransferEntity> listAllTransfers() {
+        return transferService.findAll();
+    }
 
-        }
-        @RequestMapping(value="/add",method=RequestMethod.POST)
-        public TransferEntity addTransfer(@RequestBody TransferEntity transfer){
-            transfer = transferService.addTransfer(transfer);
-            return transfer;
-        }
+
+    @PutMapping(value = "/update/{transferId}")
+    public TransferEntity updateTransfer(@PathVariable Long transferId, @RequestBody TransferDTO request) {
+        return transferService.updateTransfer(transferId, request);
+    }
+
+
+    @DeleteMapping("/delete/{transferId}")
+    private void deleteTransfer(@PathVariable("transferId") Long transferId) {
+        transferService.deleteTransfer(transferId);
+    }
 
 }

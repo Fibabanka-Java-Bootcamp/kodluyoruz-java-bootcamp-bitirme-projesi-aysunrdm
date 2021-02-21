@@ -1,16 +1,19 @@
 package org.kodluyoruz.mybank.Customer;
-import java.util.List;
-import java.lang.*;
+
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public interface CustomerService {
 
-     CustomerEntity addCustomer(CustomerEntity customer);
-     CustomerEntity updateCustomer(CustomerEntity customer);
-     CustomerEntity getCustomer(Long customerId);
-     List<CustomerEntity> getAllCustomers();
-     void deleteCustomer(Long customerId);
+    CustomerEntity createCustomer(CustomerDTO customer);
 
-    //CustomerEntity save(CustomerEntity customerEntity);
+    CustomerEntity updateCustomer(Long customerId, CustomerDTO request);
+
+    void deleteCustomer(Long customerId);
+
+    List<CustomerEntity> findAll();
+
+
 }

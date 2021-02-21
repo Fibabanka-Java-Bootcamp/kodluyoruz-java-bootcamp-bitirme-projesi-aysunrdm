@@ -1,66 +1,68 @@
 package org.kodluyoruz.mybank.Transfer;
 
+import lombok.*;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import javax.persistence.*;
-import lombok.*;
 
 @Data
 @Getter
 @Setter
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "transfer")
+@Table(name = "transfer", schema = "my_db")
 public class TransferEntity {
 
-        @Id
-        @GeneratedValue(strategy= GenerationType.AUTO)
-        @Column(name = "transfer_id")
-        private Long transferId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "transfer_id", nullable = false)
+    private Long transferId;
 
-        @Column(name = "transfer_type")
-        private String transferType;
+    @Column(name = "transfer_type")
+    private String transferType;
 
-        @Column(name = "transfer_datetime")
-        @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-        private LocalDateTime transferDatetime;
+    @Column(name = "transfer_code")
+    private String transferCode;
 
-        @Column(name = "transaction_code")
-        private String transactionCode;
+    @Column(name = "transfer_amount")
+    private BigDecimal transferAmount;
 
-        @Column(name = "transfer_amount")
-        private BigDecimal transferAmount;
+    @Column(name = "transfer_status")
+    private TransactionStatus transferStatus;
 
-        @Column(name = "transfer_status")
-        private TransactionStatus transferStatus;
+    @Column(name = "source_name")
+    private String sourceName;
 
-        @Column(name = "source_name")
-        private double sourceName;
+    @Column(name = "destination_name")
+    private String destinationName;
 
-        @Column(name = "destination_name")
-        private double destinationName;
+    @Column(name = "transaction_description")
+    private String transactionDescription;
 
-        @Column(name = "transaction_description")
-        private String transactionDescription;
+    @Column(name = "transfer_datetime")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+
+    private LocalDateTime transferDatetime;
 
 
-    @Override
-    public String toString() {
-        return "TransferEntity{" +
-                "transferId=" + transferId +
-                ", transferType='" + transferType + '\'' +
-                ", transferDatetime=" + transferDatetime +
-                ", transactionCode='" + transactionCode + '\'' +
-                ", transferAmount=" + transferAmount +
-                ", transferStatus=" + transferStatus +
-                ", sourceName=" + sourceName +
-                ", destinationName=" + destinationName +
-                ", transactionDescription='" + transactionDescription + '\'' +
-                '}';
+    public TransferDTO toTransferDTO() {
+        return TransferDTO.builder()
+                .transferId(this.transferId)
+                .transferType(this.transferType)
+                .transferDatetime(this.transferDatetime)
+                .transferCode(this.transferCode)
+                .transferAmount(this.transferAmount)
+                .transferStatus(this.transferStatus)
+                .sourceName(this.sourceName)
+                .destinationName(this.destinationName)
+                .transactionDescription(this.transactionDescription)
+                .transferDatetime(this.transferDatetime)
+                .build();
     }
 }

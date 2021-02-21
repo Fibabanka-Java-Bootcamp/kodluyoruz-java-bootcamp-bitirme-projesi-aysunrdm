@@ -1,61 +1,48 @@
 package org.kodluyoruz.mybank.Customer;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 import java.lang.*;
+import java.util.List;
 
 
 @RestController
-@RequestMapping("/customer")
+@RequestMapping(value = "/customer", produces = "application/json")
 public class CustomerController {
 
-
-    @Autowired()
-    @Qualifier("customerService")
+    @Autowired
     private CustomerService customerService;
 
-    @GetMapping("/{customerId}")
-    public CustomerEntity getCustomers(@PathVariable("customerId") Long customerId) {
 
-        return customerService.getCustomer(customerId);
+    @PostMapping(value = "/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public CustomerEntity createCustomer(@RequestBody CustomerDTO request) {
+        return customerService.createCustomer(request);
+    }
+
+    @GetMapping(value = "/list")
+    public List<CustomerEntity> listAllCustomers() {
+        return customerService.findAll();
     }
 
 
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public List<CustomerEntity> allCustomers() {
-        return customerService.getAllCustomers();
-    }
-
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public CustomerEntity editCustomer(@RequestBody CustomerEntity customer) {
-        customer = customerService.updateCustomer(customer);
-        return customer;
-
-    }
-
-    @PostMapping(value = "/save", consumes = "application/json", produces = "application/json")
-    public CustomerEntity saveCustomerEntity(@RequestBody CustomerEntity customerEntity) {
-      System.out.println("CustomerEntity save has been started.. ");
-        return customerService.addCustomer(customerEntity);
+    @PutMapping(value = "/update/{customerId}")
+    public CustomerEntity updateCustomer(@PathVariable Long customerId, @RequestBody CustomerDTO request) {
+        return customerService.updateCustomer(customerId, request);
     }
 
 
-
-/*
-    @PostMapping("/add")
-    CustomerEntity newEmployee(@RequestBody CustomerEntity customerEntity) {
-        return custom.save(customerEntity);
+    @DeleteMapping("/delete/{customerId}")
+    private void deleteCustomer(@PathVariable("customerId") Long customerId) {
+        customerService.deleteCustomer(customerId);
     }
-*/
-
 
 }
+
+
+
 
 
 
@@ -64,19 +51,14 @@ public class CustomerController {
 
 
 
-    @RequestMapping(value="/save",method=RequestMethod.POST)
-    public CustomerEntity saveCustomer(@RequestBody CustomerEntity customer){
-        // CustomerEntity c= new CustomerEntity();
-        customer = customerService.saveCustomer(customer);
-        return customer;
+    @ResponseStatus(code = HttpStatus.CREATED)
+   @PostMapping(value = "/save", consumes = "application/json", produces = "application/json")
+       public CustomerEntity addCustomerEntity(@RequestBody CustomerEntity customerEntity) {
+
+      System.out.println("CustomerEntity add has been started... ");
+
+        return customerService.save(customerEntity);
     }
 
 
-
-
-         /* @RequestMapping(value="/add",method=RequestMethod.POST)
-        public CustomerEntity addCustomer(CustomerEntity customer){
-           // CustomerEntity c= new CustomerEntity();
-
-            return customerService.addCustomer(customer);
-        }*/
+    */
