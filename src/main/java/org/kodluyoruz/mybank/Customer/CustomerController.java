@@ -33,7 +33,6 @@ public class CustomerController {
         return customerService.updateCustomer(customerId, request);
     }
 
-
     @DeleteMapping("/delete/{customerId}")
     private void deleteCustomer(@PathVariable("customerId") Long customerId) {
         customerService.deleteCustomer(customerId);

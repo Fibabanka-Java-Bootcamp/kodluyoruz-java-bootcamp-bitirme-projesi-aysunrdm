@@ -66,21 +66,6 @@ public class AccountServiceImpl implements AccountService {
     }
 
 
-
-
-
-/*
-
-    Kullanıcılar iki farkılı türde
-    hesap açabilecek,vadesiz mevduat hesabı ve birikim hesabı.
-
-    İki hesap arası para transferi
-    yapılabilecek, vadesiz mevduat hesabı başka hesaplara para transferi için
-    kullanılabilecekken birikim hesabından doğrudan para transferi yapılamayacak.
-     Hesaplar
-    TL, Euro yada Dolar para birimlerinde açılabilecek.
- */
-
     @Transactional
     public boolean savingAccount(Long accountId) {
 
