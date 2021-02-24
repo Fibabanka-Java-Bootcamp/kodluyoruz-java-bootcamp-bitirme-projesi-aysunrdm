@@ -14,6 +14,9 @@ Projede kullanılan teknolojiler: Java, Spring Boot, Spring MVC, Spring Data JPA
 ### Müşteri yönetimi
 REST API'lar aracılığı ile; müşteri oluşturma, güncelleme, listeleme ve silme işlemleri gerçekleştirilmiştir. Silme işlemi, hesaplarında parası bulunan ya da kredi kartı borcu bulunan müşteriler için mümkün olmayacak şekilde service kodlaması yapılmıştır.
 
+### Hesap Yönetimi
+Banka müşterilerinin yatırımlarını kontrol etmek amacıyla kullanabilmeleri için uygun API'ler kodlanarak hesap oluşturmalarına ve silmelerine izin verilmiştir.
+
 ### REST API Design
 
 Projede uygulanmış olan REST API design aşağıda bulunan görsellerde olduğu şekildedir:
