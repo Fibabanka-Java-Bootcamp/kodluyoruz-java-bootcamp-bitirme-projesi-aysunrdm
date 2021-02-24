@@ -56,7 +56,7 @@ Swagger editörün göstermiş olduğu API Endpoints bilgileri aşağıda belirt
 
 <img src="figure_account.png"/>
 
-## TEST
+## SWAGGER TEST
 
 ### Customer REST API Oluşturma
 
