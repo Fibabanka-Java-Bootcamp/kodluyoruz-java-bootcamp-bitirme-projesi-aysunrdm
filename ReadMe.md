@@ -17,6 +17,10 @@ REST API'lar aracılığı ile; müşteri oluşturma, güncelleme, listeleme ve 
 ### Hesap Yönetimi
 Banka müşterilerinin yatırımlarını kontrol etmek amacıyla kullanabilmeleri için uygun API'ler kodlanarak hesap oluşturmalarına ve silmelerine izin verilmiştir.
 
+### Transfer Yönetimi
+Müşterilerin para transferlerini yönetmek için uygun API'lar sağlanmıştır. Transfer işlemleri hesaptan hesaba başarılı bir şekilde gerçekleştirilmekte ve işlem çıktısı veritabanına kaydedilmektedir.
+
+
 ### REST API Design
 
 Projede uygulanmış olan REST API design aşağıda bulunan görsellerde olduğu şekildedir:
@@ -55,6 +59,14 @@ Swagger editörün göstermiş olduğu API Endpoints bilgileri aşağıda belirt
 ### Figure 2 - **Account Endpoints**
 
 <img src="figure_account.png"/>
+
+
+### Figure 3 - **Transfer Endpoints**
+
+<img src="figure_transfer.png"/>
+
+
+
 
 ## SWAGGER TEST
 
