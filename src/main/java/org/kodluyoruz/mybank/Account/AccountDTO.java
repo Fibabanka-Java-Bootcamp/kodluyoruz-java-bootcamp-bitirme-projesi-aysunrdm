@@ -19,7 +19,7 @@ public class AccountDTO implements Serializable {
     private String bankCode;
     private String currency;
     private Long balance;
-
+    private String iban;
 
     public AccountEntity toAccountEntity() {
         return AccountEntity.builder()
@@ -30,6 +30,7 @@ public class AccountDTO implements Serializable {
                 .bankCode(this.bankCode)
                 .currency(this.currency)
                 .balance(this.balance)
+                .iban(this.iban)
                 .build();
     }
 

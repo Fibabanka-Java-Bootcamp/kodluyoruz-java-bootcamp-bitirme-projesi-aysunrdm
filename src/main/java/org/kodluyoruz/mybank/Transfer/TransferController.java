@@ -38,4 +38,10 @@ public class TransferController {
         transferService.deleteTransfer(transferId);
     }
 
+
+    @PostMapping(value = "/transferMoney")
+    private void transferMoney(@RequestBody TransferInfo transferInfo) {
+        transferService.transferMoney(transferInfo);
+    }
 }
+

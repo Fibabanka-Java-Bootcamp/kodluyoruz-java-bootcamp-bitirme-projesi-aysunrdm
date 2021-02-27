@@ -21,19 +21,19 @@ public class CustomerEntity {
     @Column(name = "customer_id", nullable = false)
     private Long customerId;
 
-    @Column(name = "customer_name", nullable = false)
+    @Column(name = "customer_name")
     private String customerName;
 
-    @Column(name = "customer_surname", nullable = false)
+    @Column(name = "customer_surname")
     private String customerSurname;
 
-    @Column(name = "customer_no", nullable = false)
+    @Column(name = "customer_no")
     private String customerNo;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email")
     private String email;
 
-    @Column(name = "phone", nullable = false)
+    @Column(name = "phone")
     private String phone;
 
     /*

@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+
 @Data
 @Getter
 @Setter
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "transfer", schema = "my_db")
 public class TransferEntity {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

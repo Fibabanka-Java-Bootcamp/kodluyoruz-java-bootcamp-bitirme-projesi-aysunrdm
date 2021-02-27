@@ -15,4 +15,7 @@ public interface TransferService {
 
     List<TransferEntity> findAll();
 
+    void transferMoney(TransferInfo transferInfo);
+
+    // void transferMoneyByCurrency(TransferInfo transferInfo, ExchangeRate exchangeRate);
 }

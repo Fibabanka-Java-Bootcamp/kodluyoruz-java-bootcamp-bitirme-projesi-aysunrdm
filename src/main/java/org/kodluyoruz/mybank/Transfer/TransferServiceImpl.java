@@ -1,11 +1,20 @@
 package org.kodluyoruz.mybank.Transfer;
 
+import org.hibernate.resource.transaction.spi.TransactionStatus;
+import org.kodluyoruz.mybank.Account.AccountEntity;
+import org.kodluyoruz.mybank.Account.AccountRepository;
+import org.kodluyoruz.mybank.Account.AccountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import static org.hibernate.resource.transaction.spi.TransactionStatus.COMMITTED;
 
 @Service("transferService")
 @Transactional
@@ -13,6 +22,12 @@ public class TransferServiceImpl implements TransferService {
 
     @Autowired
     private TransferRepository transferRepository;
+
+    @Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
+    private AccountServiceImpl accountServiceImpl;
 
     @Transactional
     public TransferEntity createTransfer(TransferDTO transfer) {
@@ -65,4 +80,43 @@ public class TransferServiceImpl implements TransferService {
         transferRepository.deleteById(transferId);
     }
 
+
+    @Transactional
+    public void transferMoney(TransferInfo transferInfo) {
+
+        AccountEntity fromAccountEntity = accountRepository.findByIban(transferInfo.getFromIbanNo());
+        AccountEntity toAccountEntity = accountRepository.findByIban(transferInfo.getToIbanNo());
+        Long amount = transferInfo.getAmount();
+        String currency = transferInfo.getCurrency();
+
+        if (!accountServiceImpl.savingAccount(fromAccountEntity.getAccountId())) {
+
+            if (!transferInfo.getFromIbanNo().isEmpty() && !transferInfo.getToIbanNo().isEmpty() &&
+
+                    transferInfo.getAmount() != null && !transferInfo.getCurrency().isEmpty()) {
+
+                if (fromAccountEntity.getBalance().compareTo(1L) == 1 && fromAccountEntity.getBalance().compareTo(amount.longValue()) == 1) {
+                    fromAccountEntity.setBalance(fromAccountEntity.getBalance() - amount);
+                    accountRepository.save(fromAccountEntity);
+                    toAccountEntity.setBalance(toAccountEntity.getBalance() + amount);
+                    accountRepository.save(toAccountEntity);
+
+                    String transferType = "EFT";
+                    String transferCode = "555";
+                    BigDecimal transferAmount = BigDecimal.valueOf(amount);
+                    TransactionStatus transferStatus = COMMITTED;
+                    String transactionDescription = "Hesaplar Arası Transfer";
+                    String sourceName = fromAccountEntity.getIban();
+                    String destinationName = toAccountEntity.getIban();
+                    LocalDateTime transferDatetime = new Timestamp(System.currentTimeMillis()).toLocalDateTime();
+
+                    transferRepository.save(new TransferEntity(0L, transferType, transferCode, transferAmount,
+                            transferStatus, sourceName, destinationName, transactionDescription, transferDatetime));
+                }
+
+            }
+        }
+    }
 }
+
+

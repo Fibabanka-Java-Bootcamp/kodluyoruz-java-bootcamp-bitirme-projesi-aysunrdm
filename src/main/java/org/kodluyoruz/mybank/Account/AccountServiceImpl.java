@@ -1,11 +1,11 @@
 package org.kodluyoruz.mybank.Account;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service("accountService")
@@ -14,6 +14,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private AccountRepository accountRepository;
+
 
     @Transactional
     public AccountEntity createAccount(AccountDTO account) {

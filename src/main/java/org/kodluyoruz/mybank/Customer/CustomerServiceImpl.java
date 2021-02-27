@@ -73,10 +73,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Transactional
     public void deleteCustomer(Long customerId) {
+        customerRepository.deleteById(customerId);
 
-        //Silme işlemi hesaplarında parası bulunan yada kredi kartı borcu bulunan müşteriler için mümkün olmayacak.
-
-
+        //Silme işlemi hesaplarında parası bulunan ya da kredi kartı borcu bulunan müşteriler için mümkün olmayacak.
         CustomerAccountCard customerAccountCard = this.customerAccountRepository.findCustomerAccountByCustomerId(customerId);
 
 

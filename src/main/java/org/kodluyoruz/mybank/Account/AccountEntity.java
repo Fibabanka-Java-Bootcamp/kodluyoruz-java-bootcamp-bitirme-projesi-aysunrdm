@@ -38,6 +38,9 @@ public class AccountEntity {
     @Column(name = "balance")
     private Long balance;
 
+    @Column(name = "iban")
+    private String iban;
+
       /*  @JsonIgnore
         @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
         @JoinColumn(name = "customer_id", referencedColumnName = "customer_id", insertable = false, updatable = false)
@@ -57,6 +60,7 @@ public class AccountEntity {
                 .bankCode(this.bankCode)
                 .currency(this.currency)
                 .balance(this.balance)
+                .iban(this.iban)
                 .build();
     }
 

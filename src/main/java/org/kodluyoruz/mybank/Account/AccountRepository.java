@@ -14,5 +14,8 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
 
     void deleteById(Long accountId);
 
+    AccountEntity findByAccountNo(String accountNo);
+
+    AccountEntity findByIban(String iban);
 
 }

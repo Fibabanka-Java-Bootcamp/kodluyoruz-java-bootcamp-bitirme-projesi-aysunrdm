@@ -35,6 +35,10 @@ public class CardController {
         cardService.deleteCard(cardId);
     }
 
+    @GetMapping(value = "/debtInquiry/{cardId}")
+    private Long debtInquiry(@PathVariable("cardId") Long cardId) {
+        return cardService.debtInquiry(cardId);
+    }
 
 }
 

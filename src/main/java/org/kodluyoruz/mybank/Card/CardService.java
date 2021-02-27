@@ -14,6 +14,7 @@ public interface CardService {
     CardEntity updateCard(Long cardId, CardDTO request);
 
     void deleteCard(Long cardId);
+
+    Long debtInquiry(Long cardId);
 }
 
-//English level test

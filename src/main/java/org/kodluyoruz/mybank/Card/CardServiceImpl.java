@@ -61,6 +61,14 @@ public class CardServiceImpl implements CardService {
         cardRepository.deleteById(cardId);
     }
 
+
+    @Transactional
+    public Long debtInquiry(Long cardId) {
+        CardEntity card = cardRepository.findById(cardId) //
+                .orElseThrow(() -> new DebtNotFoundException(cardId));
+        return cardRepository.findById(cardId).get().getCreditCardDebt();
+    }
+
 }
 
 
